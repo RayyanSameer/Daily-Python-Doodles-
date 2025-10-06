@@ -1,4 +1,5 @@
 #Simple Text based grocey sorter
+#day 1
 groceies = {"Milk":24 ,"Cheese":53,"Eggs":8 ,"Curd":48,"Bread":40}
 list = {}
 

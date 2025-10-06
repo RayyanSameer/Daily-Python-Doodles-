@@ -1,5 +1,5 @@
 #Generates an ASCII style minimalist  business card
-
+#Day 1
 #Take user information
 
 first_name = input("Enter first name : ")
