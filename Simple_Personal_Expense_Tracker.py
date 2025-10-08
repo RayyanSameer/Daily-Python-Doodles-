@@ -17,7 +17,8 @@ baseline = food + transportation + entertainment
 
 print("Total :" + str(total))
 print("Your highest expense today was : ",highest_expense)
-print("Your baseline costs would amount to : ",  int(baseline) * 30)
+print(f"Your baseline costs would amount to : {baseline * 30} over a period of 30 days")
+
 print("Percentage wise breakdown: ")
 
 food_percentage = (food / total) * 100
@@ -29,3 +30,7 @@ print(f"  Food: {food_percentage:.2f}%")
 print(f"  Transportation: {transportation_percentage:.2f}%")
 print(f"  Entertainment: {entertainment_percentage:.2f}%")
 print(f"  Shopping: {shopping_percentage:.2f}%")
+
+income = int(input("Whats your income ?: "))
+savings = income -baseline
+print(f"With this expense , expect { savings } at the end of the month")
