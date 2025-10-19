@@ -4,7 +4,7 @@ students = []  # list holding students
 while True:
     print("Welcome to Grading Manager!")
     print("What would you like to do?")
-    print(""" (1) Add Students \n (2) Delete Students \n (3) View Students \n (4) Update Students \n (5) Quit \n""")
+    print(""" (1) Add Students \n (2) Delete Students \n (3) View Students \n (4) Update Students \n  (5) Quit \n""")
     choice = int(input("Enter your choice: "))
 
     if choice == 1:
@@ -43,3 +43,4 @@ while True:
     elif choice == 5:
         print("Exiting Grading Manager. Goodbye!")
         break
+
