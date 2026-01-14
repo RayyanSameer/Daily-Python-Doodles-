@@ -26,10 +26,34 @@ class Kitten():
         print("_" * 30)
 
     def feed(self):
-        print(f"Feeding {self.name}.....")
-        self.weight += 20
-        self.hunger -= 20
-        self.emotion = "Happy"
+        if self.hunger <= 0:
+            print(f"{self.name} is full !")
+        else:
+
+            print(f"Feeding {self.name}.....")
+            self.weight += 20
+            self.hunger -= 20
+            self.emotion = "Happy"
+
+            if self.hunger < 0:
+                self.hunger = 0
+
+
+    def play(self):
+        if self.hunger > 40:
+            print(f"{self.name} is too hungry!")        
+            self.emotion = "Grumpy"
+        else:
+             print(f"You rwave the laser pointer. {self.name} goes crazy!")
+             self.emotion = "Ecstatic"
+             self.hunger += 15
+             print(f"{self.name} is tired but happy.")         
+
+
+def time(kitten_list):
+    for cat in kitten_list:
+        cat.hunger += 5
+        cat.thirst += 5              
 
 def clear():
     os.system('cls' if os.name =='nt' else 'clear') 
@@ -83,29 +107,62 @@ else:
 
 
 while True:
-
     clear()
+    
+    print("\n=== KITTEN MANAGER v3.0 ===")
+    print("Current Colony:")
+    for index, cat in enumerate(cats):
+        print(f"[{index + 1}] {cat.name} (Hunger: {cat.hunger} | Mood: {cat.emotion})")
 
+    print("\n[A] Actions (Feed/Play)")
+    print("[S] View Full Stats")
+    print("[X] Save & Quit")
 
-    print("\n---KITTEN MANAGER----")
-    print("Press [S] to see stats")
-    print("Press [F] to feed Simba")
-    print("Press [Q] to quit")
-
-    action = input("Selection: ").upper()
+    action = input("\nSelection: ").upper()
 
     if action == 'S':
-        simba.stats()
-        scar.stats()
-        input("\nPress Enter to return to menu...")
-    elif action == 'F':
-        simba.feed() 
-        input("\nPress Enter to return to menu...")
-    elif action == 'Q':
-        print("Bye!")
+        print("\n--- STATS ---")
+        for cat in cats:
+            cat.stats()
+        input("Press Enter...")
+
+    elif action == 'A':
+        # 1. Select the Cat
+        try:
+            cat_idx = int(input("Enter Cat Number: ")) - 1
+            if 0 <= cat_idx < len(cats):
+                selected_cat = cats[cat_idx]
+                
+                # 2. Select the Action
+                print(f"\nSelected: {selected_cat.name}")
+                print("[1] Feed")
+                print("[2] Play")
+                sub_choice = input("Choose Action: ")
+                
+                if sub_choice == '1':
+                    selected_cat.feed()
+                elif sub_choice == '2':
+                    selected_cat.play()
+                else:
+                    print("Invalid Action.")
+                
+                # 3. Entropy (Time Passes only when you act)
+                time(cats)
+                input("Press Enter...")
+                
+            else:
+                print("Invalid Cat Number.")
+                input("Press Enter...")
+        except ValueError:
+            print("Please enter a number!")
+            input("Press Enter...")
+
+    elif action == 'X':
+        print("Saving data...")
         save_data(cats)
+        print("System Shutdown. Goodbye.")
         break
+    
     else:
-        print("Invalid command ")       
-
-
+        print("Invalid Command.")
+        input("Press Enter...")
