@@ -79,4 +79,5 @@ class Library:
 
 #Member Methods 
     def add_book(self,title,author,genre) :
-        book_id = str(len(sel))  
+        book_id = str(len(self))
+          
