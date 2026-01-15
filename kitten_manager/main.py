@@ -1,5 +1,5 @@
 from models import Kitten
-from utils import clear, load_data, save, pass_time
+from utils import clear, load_data, save, pass_time,get_valid_int
 
 cats = load_data()
 
@@ -36,35 +36,29 @@ while True: #menu
         input("Press Enter ")
 
     elif action == "A":
-        try:
-            cat_idx    = int(input("Enter Cat Number: ")) -1
-            if 0 <= cat_idx < len(cats):
-                selected_cat = cats[cat_idx]
+        print("Which cat? ")
+        cat_idx = get_valid_int("Enter cat number: ", 1, len(cats))
+        selected_cat = cats[cat_idx - 1]
 
-                print(f"\nSelected: {selected_cat.name}")
-                print("[1] Feed")
-                print("[2] Play")
-                sub_choice = input("Choose Action: ")
-                
-                if sub_choice == '1':
-                    selected_cat.feed()
-                elif sub_choice == '2':
-                    selected_cat.play()
-                else:
-                    print("Invalid Action.")
-                
-                pass_time(cats)
-                input("Press Enter...")
-            else:
-                print("Invalid Cat Number.")
-                input("Press Enter...")
-        except ValueError:
-            print("Please enter a number!")
-            input("Press Enter...")
+        print(f"\nSelected: {selected_cat.name}")
+
+        #Action
+        print("[1] Feed ")
+        print("[2] Play")
+        choice = get_valid_int("Choose Action: ",1 ,2)
+
+        if choice == 1:
+            selected_cat.feed()
+        elif choice == 2:
+            selected_cat.play()
+
+        # 3. Entropy
+        pass_time(cats)
+        input("Press Enter...")
 
     elif action == 'X':
         print("Saving data...")
-        save(cats)
+        save(cats) # Ensure this matches the function name in utils.py
         print("System Shutdown. Goodbye.")
         break
     

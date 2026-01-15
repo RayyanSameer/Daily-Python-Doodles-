@@ -45,4 +45,15 @@ def load_data():
     except FileNotFoundError:
         return None
 
-def get_valid_int(prompt)
+def get_valid_int(prompt, min_val , max_val):
+    while True:
+        try:
+            user_input = input(prompt)
+            value = int(user_input)
+            if min_val <= value <= max_val:
+                return value
+            else:
+                print(f"Error: Number must be between {min_val} and {max_val}.")
+        except ValueError:
+            print("Error: That is not a number. Try again.")  
+

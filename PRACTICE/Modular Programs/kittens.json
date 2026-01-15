@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Simba",
+        "age": 1,
+        "weight": 500,
+        "hunger": 70,
+        "thirst": 40,
+        "emotion": "Hangry"
+    },
+    {
+        "name": "Scar",
+        "age": 2,
+        "weight": 320,
+        "hunger": 30,
+        "thirst": 30,
+        "emotion": "Happy"
+    }
+]
