@@ -1,6 +1,7 @@
 import sys
 import manager
 
+
 def handle_add():
     # 1. Ask User
     print("\n--- NEW ENTRY ---")
@@ -88,3 +89,6 @@ def run_menu():
             sys.exit()
         else:
             print("Invalid command.")
+
+if __name__ == "__main__":
+    run_menu()            

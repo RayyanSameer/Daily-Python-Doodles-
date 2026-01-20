@@ -1,10 +1,19 @@
 import os
 import datetime
+from cryptography.fernet import Fernet
 
 DATA_DIR = "data"
+KEY_FILE = "secret.key"
 
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
+
+
+
+def load_key():
+    return open(KEY_FILE, "rb").read()
+key = load_key()
+cipher = Fernet(key)
 
 def add_entry(title, mood, text):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")

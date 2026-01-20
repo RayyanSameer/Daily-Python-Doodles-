@@ -1,0 +1,10 @@
+# Security (NEVER COMMIT THESE)
+secret.key
+
+# Personal Data (Your diary entries)
+data/
+data_backup/
+
+# Python Junk (Compiled files)
+__pycache__/
+*.pyc
