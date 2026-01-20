@@ -1,5 +1,4 @@
-Here is the complete document. You can copy everything in the code block below and save it as README.md in your project folder.
-Markdown
+
 
 # 🕵️ AWS Spy Bot (API Monitor)
 
