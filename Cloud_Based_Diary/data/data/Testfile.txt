@@ -1,0 +1,6 @@
+Title: Testfile
+Date: 2026-01-20_05-16-55
+Mood: This is a testC:/Users/turbo/AppData/Local/Programs/Python/Python313/python.exe "c:/Projects/Python Doodles/Cloud_Based_Diary/data/manager.py"
+--------------------
+
+Testtext
