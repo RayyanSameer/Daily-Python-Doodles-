@@ -13,9 +13,9 @@ def handle_add():
 
     # 3. Show Result
     if result:
-        print(f"✅ Saved as: {result}")
+        print(f" Saved as: {result}")
     else:
-        print("❌ Error saving file.")
+        print(" Error saving file.")
 
 def handle_list():
     print("\n[Your Vault]")
@@ -26,7 +26,7 @@ def handle_list():
         return
 
     for f in files:
-        print(f" 📄 {f}")
+        print(f"  {f}")
 
 def handle_read():
     # 1. Ask which file
@@ -41,16 +41,35 @@ def handle_read():
         print(content)
         print("="*20 + "\n")
     else:
-        print("❌ File not found.")
+        print(" File not found.")
 
+def handle_update():
+    print("\n--- Update Entry ---")
+    filename = input("Enter filename to update: ")
+    new_text = input("Add your new text: ")
+    
+    if manager.update_entry(filename, new_text):
+        print(" Entry updated successfully.")
+    else:
+        print(" File not found.")    
+
+def handle_delete():
+    print("\n---Delete Entry---")
+    filename = input("Enter entry to be deleted : ")
+
+    if manager.delete_entry(filename):
+        print("Entry")
+    else:
+        print("File not found")    
 def run_menu():
-    # THE INFINITE LOOP
     while True:
         print("\n--- CLOUD DIARY v1 ---")
         print("1. Add Entry")
         print("2. List Entries")
         print("3. Read Entry")
-        print("4. Exit")
+        print("4. Delete Entry")
+        print("5. Update Entry")   
+        print("6. Exit")
         
         choice = input("Select > ")
         
@@ -60,11 +79,12 @@ def run_menu():
             handle_list()
         elif choice == "3":
             handle_read()
-        elif choice == "4":
-            print("Bye.")
+        elif choice == "4":     # Corrected: Now points to Delete
+            handle_delete()
+        elif choice == "5":     # Corrected: Now points to Update
+            handle_update()
+        elif choice == "6":     # Corrected: Now points to Exit
+            print("Bye!")
             sys.exit()
         else:
             print("Invalid command.")
-
-if __name__ == "__main__":
-    run_menu()
