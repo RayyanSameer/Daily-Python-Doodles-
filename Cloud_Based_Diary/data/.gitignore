@@ -8,3 +8,5 @@ data_backup/
 # Python Junk (Compiled files)
 __pycache__/
 *.pyc
+
+venv/
