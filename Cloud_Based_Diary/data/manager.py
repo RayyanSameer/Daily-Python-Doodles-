@@ -5,101 +5,108 @@ from cryptography.fernet import Fernet
 DATA_DIR = "data"
 KEY_FILE = "secret.key"
 
+# Ensure data directory exists
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
-
-
+# --- SECURITY SETUP ---
 def load_key():
     return open(KEY_FILE, "rb").read()
-key = load_key()
-cipher = Fernet(key)
+
+try:
+    key = load_key()
+    cipher = Fernet(key)
+except FileNotFoundError:
+    print(" CRITICAL ERROR: 'secret.key' not found! Run setup_security.py first.")
+    cipher = None
+# ----------------------
 
 def add_entry(title, mood, text):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     
-   
     if not title:
         filename = f"{timestamp}.txt"
     else:
-     
         clean_title = title.replace(" ", "_")
         filename = f"{clean_title}.txt"
 
-    
     filepath = os.path.join(DATA_DIR, filename)
     
-  
+    # 1. Prepare Content
+    raw_content = f"Mood: {mood}\n\n{text}"
+    
+    # 2. Encrypt
+    if cipher:
+        encrypted_data = cipher.encrypt(raw_content.encode())
+    else:
+        return None
+
     try:
-        with open(filepath, "w") as f:
-           
-            f.write(f"Mood: {mood}\n\n{text}")
+        # 3. Write Bytes
+        with open(filepath, "wb") as f:
+            f.write(encrypted_data)
         return filename
     except OSError:
         return None
 
 def list_entries():
-   
+    if not os.path.exists(DATA_DIR):
+        return []
     return os.listdir(DATA_DIR)
 
 def read_entry(filename):
     filepath = os.path.join(DATA_DIR, filename)
     
-   
     if not os.path.exists(filepath):
-        return None  
-    
-    # 2. Open and Read
-    try:
-        with open(filepath, "r") as f:
-            content = f.read()
-        return content
-    except OSError:
         return None
+    
+    try:
+        # 1. READ 
+        with open(filepath, "rb") as f:
+            encrypted_data = f.read()
+            
+        # 2. DECRYPT 
+        decrypted_bytes = cipher.decrypt(encrypted_data)
+        
+        # 3. DECODE 
+        return decrypted_bytes.decode()
+        
+    except Exception as e:
+        return f" Error: Could not decrypt. ({e})"
 
-def delete_entry(filename):
+def update_entry(filename, new_text):
     filepath = os.path.join(DATA_DIR, filename)
     
     if not os.path.exists(filepath):
         return False
+    
+    try:
+        # 1. Read & Decrypt Old Data
+        with open(filepath, "rb") as f:
+            encrypted_data = f.read()
         
+        current_content = cipher.decrypt(encrypted_data).decode()
+        
+        # 2. Add New Text
+        updated_content = current_content + "\n\n" + "-"*10 + " [UPDATE] " + "-"*10 + "\n" + new_text
+        
+        # 3. Encrypt Everything
+        new_encrypted_data = cipher.encrypt(updated_content.encode())
+        
+        # 4. Overwrite File
+        with open(filepath, "wb") as f:
+            f.write(new_encrypted_data)
+            
+        return True
+    except Exception:
+        return False
+
+def delete_entry(filename):
+    filepath = os.path.join(DATA_DIR, filename)
+    if not os.path.exists(filepath):
+        return False
     try:
         os.remove(filepath)
         return True
     except OSError:
         return False
-
-
-def update_entry(filename, new_text):
-    filepath = os.path.join(DATA_DIR,filename)
-
-    if not os.path.exists(filepath):
-        return False
-    
-    try:
-        with open(filepath,"a") as f:
-            f.write("\n\n" + "-"*10 + " [UPDATE] " + "-"*10 + "\n")
-            f.write(new_text)
-        return True
-    except OSError:
-        return False    
-
-    
-# --- MANUAL TEST ZONE ---
-if __name__ == "__main__":
-    print("🤖 Testing Manager Logic...")
-    
-    # 1. Test Adding
-    print("\n1. Creating Entry...")
-    file_created = add_entry("Commute Thoughts", "Tired", "Traffic was terrible.")
-    print(f"   -> Result: {file_created}")
-
-    # 2. Test Reading
-    print("\n2. Reading Entry...")
-    content = read_entry(file_created)
-    print(f"   -> Content Read: {content}")
-    
-    # 3. Test Deleting
-    print("\n3. Deleting Entry...")
-    deleted = delete_entry(file_created)
-    print(f"   -> Deleted: {deleted}")    

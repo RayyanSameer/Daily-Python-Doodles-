@@ -2,6 +2,7 @@ import sys
 import manager
 
 
+
 def handle_add():
     # 1. Ask User
     print("\n--- NEW ENTRY ---")
@@ -17,6 +18,7 @@ def handle_add():
         print(f" Saved as: {result}")
     else:
         print(" Error saving file.")
+        input("\nPress Enter to continue...")
 
 def handle_list():
     print("\n[Your Vault]")
@@ -29,7 +31,11 @@ def handle_list():
     for f in files:
         print(f"  {f}")
 
+    input("\nPress Enter to continue...")      
+
 def handle_read():
+
+    
     # 1. Ask which file
     filename = input("Enter filename to read (e.g., My_Day.txt): ")
     
@@ -43,6 +49,7 @@ def handle_read():
         print("="*20 + "\n")
     else:
         print(" File not found.")
+    input("\nPress Enter to continue...")    
 
 def handle_update():
     print("\n--- Update Entry ---")
@@ -52,7 +59,8 @@ def handle_update():
     if manager.update_entry(filename, new_text):
         print(" Entry updated successfully.")
     else:
-        print(" File not found.")    
+        print(" File not found.")  
+        input("\nPress Enter to continue...")  
 
 def handle_delete():
     print("\n---Delete Entry---")
