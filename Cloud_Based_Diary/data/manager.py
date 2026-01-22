@@ -101,12 +101,35 @@ def update_entry(filename, new_text):
     except Exception:
         return False
 
-def delete_entry(filename):
+
+def overwrite_entry(filename, text):
+   
     filepath = os.path.join(DATA_DIR, filename)
-    if not os.path.exists(filepath):
+    
+    if not cipher:
         return False
+
     try:
-        os.remove(filepath)
+        #
+        encrypted_data = cipher.encrypt(text.encode())
+        
+      
+        with open(filepath, "wb") as f:
+            f.write(encrypted_data)
         return True
-    except OSError:
+    except Exception as e:
+        print(f"Error saving: {e}")
+        return False    
+    
+
+    # In manager.py, at the bottom:
+def delete_entry(filename):
+    """ Deletes the specific file from the data folder """
+    filepath = os.path.join(DATA_DIR, filename)
+    try:
+        if os.path.exists(filepath):
+            os.remove(filepath) # 
+            return True
+    except Exception as e:
+        print(f"Error deleting: {e}")
         return False
