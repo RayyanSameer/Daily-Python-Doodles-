@@ -1,73 +1,77 @@
-# 🔒 Cloud Diary Vault (v1.0)
+#  Cloud Diary Vault (v2.0)
 
-A secure, local-first desktop diary application built with Python. It features military-grade encryption (Fernet), a modern GUI (CustomTkinter), and a full CRUD system with password protection.
+A secure, **Hybrid-Cloud** diary application built with a Microservices architecture. It features a headless REST API running on **AWS EC2**, a local **Streamlit** Web UI, and military-grade encryption (Fernet) for data security.
 
-## ✨ Features
-* **Military-Grade Security:** All entries are encrypted using `cryptography` (Fernet) before touching the disk.
-* **Authentication Gate:** SHA-256 Hashed Master Password protection on startup.
-* **Modern UI:** Dark-mode enabled interface built with `customtkinter`.
-* **Search & Filter:** Live search filtering for finding entries instantly.
-* **CRUD System:** Create, Read, Update, and Delete diary entries securely.
+##  Features
+* **Hybrid Sync:** Write entries on your local machine, securely stored on an AWS Cloud Server in Mumbai.
+* **Military-Grade Security:** All entries are encrypted using cryptography (Fernet) before being saved to the server disk.
+* **Headless Microservice:** The backend runs as a pure Dockerized API (FastAPI) on EC2.
+* **Modern Web UI:** A beautiful, browser-based interface built with Streamlit (no HTML/CSS needed).
+* **Authentication Gate:** SHA-256 Hashed Master Password protection for every save operation.
 
-## 🛠️ Tech Stack
-* **Language:** Python 3.12+
-* **GUI:** CustomTkinter (Tkinter wrapper)
+##  Tech Stack
+* **Language:** Python 3.10+
+* **Frontend:** Streamlit (Web UI)
+* **Backend:** FastAPI (REST API)
+* **Cloud:** AWS EC2 (Ubuntu Server 24.04 LTS)
+* **Containerization:** Docker & Docker Compose
 * **Security:** Fernet (Symmetric Encryption), SHA-256 (Hashing)
-* **Storage:** Local Encrypted Flat-files (Migration to AWS S3 planned for v2.0)
 
-## 🚀 Setup & Installation
+##  Setup & Installation
 
 ### Prerequisites
-* Python 3.10 or higher
-* Linux/Windows/MacOS
+* Python 3.10+
+* Docker Desktop (for local backend testing)
+* An active AWS EC2 Instance (for production)
 
-### Installation
-1.  **Clone the repository**
-    ```bash
-    git clone [https://github.com/RayyanSameer/Daily-Python-Doodles-.git]
-    cd Cloud_Diary_Vault
-    ```
+### 1. Backend Deployment (AWS Server)
+SSH into your EC2 instance and run the container:
 
-2.  **Create a Virtual Environment**
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
-    ```
+```bash
+# Connect to your AWS Server
+ssh -i "your-key.pem" ubuntu@<YOUR_EC2_IP>
 
-3.  **Install Dependencies**
-    ```bash
-    pip install -r requirements.txt
-    ```
+# Clone & Launch
+git clone [https://github.com/RayyanSameer/Cloud-Notes-Vault.git](https://github.com/RayyanSameer/Cloud-Notes-Vault.git)
+cd Cloud-Notes-Vault
+docker compose up --build -d
 
-4.  **First Run (Security Setup)**
-    The app will automatically generate encryption keys and prompt you to set a Master Password on the first launch.
-    ```bash
-    python3 gui.py
-    ```
+2. Frontend Usage (Local Laptop)
 
-## 📂 Project Structure
-```text
+Run the interface on your local machine to connect to the cloud.
+Bash
+
+# Install Dependencies
+pip install -r requirements.txt
+
+# Launch the Web App
+streamlit run frontend.py
+
+ Project Structure
+Plaintext
+
 Cloud_Diary_Vault/
 │
-├── data/                  # Encrypted diary entries (Auto-generated)
+├── storage/               # Encrypted diary entries (On Server)
 ├── auth.hash              # SHA-256 Hashed Master Password
 ├── secret.key             # Fernet Encryption Key (DO NOT SHARE)
-├── gui.py                 # Frontend: CustomTkinter Interface
-├── manager.py             # Backend: Encryption, File I/O, Auth Logic
-├── requirements.txt       # Dependency list
-└── README.md              # Documentation
+├── api.py                 # Backend: FastAPI REST Service
+├── frontend.py            # Frontend: Streamlit Web Interface
+├── manager.py             # Logic: Encryption & File Handling
+├── Dockerfile             # Container Instructions
+├── docker-compose.yml     # Orchestration Config
+└── requirements.txt       # Dependency list
 
+Roadmap (DevOps Transformation)
 
-🗺️ Roadmap (DevOps Transformation)
+    [x] v1.0: Secure Local Desktop App (Tkinter)
 
-    [x] v1.0: Secure Local Desktop App (Completed)
+    [x] v2.0: Hybrid Cloud Deployment (AWS EC2 + Docker)
 
-    [ ] v1.1: Containerization with Docker
+    [ ] v3.0: Full Cloud Native (AWS S3 Storage + Cognito Auth)
 
-    [ ] v1.2: CI/CD Pipeline via GitHub Actions (Linting & Testing)
+    [ ] v4.0: Kubernetes Cluster Deployment (EKS)
 
-    [ ] v2.0: Cloud Storage Integration (AWS S3)
+ Security Note
 
-🛡️ Security Note
-
-This application stores the secret.key locally. If you lose this key, all data is permanently lost. There is no recovery backdoor.
+This application relies on secret.key. If you lose this key, all data on the server is permanently unreadable. Backup your key securely.
