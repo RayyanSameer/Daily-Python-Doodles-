@@ -9,5 +9,6 @@ data_backup/
 __pycache__/
 *.pyc
 *.bin
+*.pem
 
 venv/

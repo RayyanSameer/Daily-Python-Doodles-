@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  vault-app:
+    build: .                          
+    container_name: my-cloud-diary    
+    ports:
+      - "8001:8000"                   # Map laptop port 8001 -> container port 8000
+    volumes:
+      - ./data:/app/data              
+    restart: always                  
